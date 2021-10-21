@@ -1,0 +1,39 @@
+﻿constant int x = 6; #constant
+
+function mathAdd('this function is going to add 2 or more numbers'): #new function
+$int a, int b, int r; #function parameters
+
+a = 12;
+b = 9;
+r = a + b; 
+end: #end function 
+
+start: #start main
+{
+
+mathAdd(int a, int b, int r); #function calls
+int x; #declares
+x= 12; #assigns
+ 
+ while{ x>6 #while loop 
+ }:
+ int p;
+ p = -5; 
+ :
+
+if(x>6){ #if statement
+
+int y; 
+y = -9 + (8*7);
+ while{ p - 0 #testing while inside if statement 
+ }:
+ int y;
+ y= 24;
+ :
+
+} else { #else statement 
+
+y = 95/4;
+}
+
+} end: #end program 

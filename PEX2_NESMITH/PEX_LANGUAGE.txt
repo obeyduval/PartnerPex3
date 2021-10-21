@@ -1,0 +1,134 @@
+// This tells SableCC to put all of the code in a package called CS426
+Package CS426;
+
+// Helpers are sets that let you talk about multiple characters in the same way
+Helpers
+	whitespaces = ' ' | 9 | 10 | 13;
+	natural = ['1'..'9'];
+	whole = ['0' + natural];
+	letter = [['a'..'z'] + ['A'..'Z']];
+	escape = '\n' | '\t';
+	period = '.';
+	quote = '"';
+	chars = ([[0..0xffff]-[[10+13] + ['"' + '\']]]); 
+
+
+// PEX 1 - Lexer Portion
+Tokens
+
+	//Keywords
+	keyword_while = 'while';
+	keyword_loop = 'loop';
+	keyword_constant = 'constant';
+	keyword_start = 'start';
+	keyword_end = 'end';
+	keyword_if = 'if'; 
+	keyword_else = 'else';
+	keyword_function = 'function';
+	keyword_then = 'then';
+
+
+	//operations and EOL
+	eol = ';';
+	assign = '=';
+	plus = '+';
+	mult = '*';
+	div = '/';
+	minus = '-';
+	equiv = '=';
+	not_equiv = '!=';
+	greater = '>';
+	great_equal = '>=';
+	less = '<';
+	less_equal = '<=';
+	slash = '\';
+	or = '||';
+	end = ':';
+	increment = '++';
+	decrement = '--'; 
+	not = '!';
+	comma = ',';
+	
+	
+
+	//Miscellaneous 
+	sing_quote = ''';
+	left_bracket = '{';
+	right_bracket = '}';
+	open_parent = '(';
+	close_parent = ')';
+	dollar = '$';
+
+
+	//Variables
+	id = ('_'? letter+)*;
+
+	//Comments
+	comment = '#' ([[0..0xffff]-[10+13]])*;
+
+	//Literals
+	integer = '0' | natural whole* ; 
+	and = '&';	
+	float = ('0'| natural whole*)+  '.' ('0'| natural whole*)+ ('e'|'E')? '-'? natural?;
+
+	//Strings
+	string = ''' (chars | '"' | '\n' | '\t' chars)* ''';
+
+	// Whitespace
+	blank = whitespaces+;
+
+ Ignored Tokens
+	blank, comment;
+
+
+// PEX 2 - Parser Portion
+Productions
+
+	program = {constant} constant_dec program | {pass} program2;
+	
+	program2 = {multiple} function_dec program2 | {pass} program3;
+	
+    program3 = {main} main_program;
+
+	statements = {multiple} statement statements | {none};
+	
+	statement = {declaration} declare_statement |
+				{call} function_call_statement |
+				{assignment} assign_statement | 
+				{conditional} if_statement | {loop} while_statement;
+
+	arguments = {multiple} or_expression comma arguments | {single} or_expression | {none}; 
+	parameters = {multiple} [type]:id [varname]:id comma parameters | {single} [type]:id [varname]:id | {none};
+
+	declare_statement = {declaration} [type]:id [varname]:id eol;	
+	
+	function_call_statement = {call} id open_parent parameters close_parent eol; 
+	
+	assign_statement = {assignment} id assign arguments eol; 
+
+	if_statement = {conditional} keyword_if open_parent or_expression close_parent left_bracket statements right_bracket else_statement;
+	else_statement = {mult} keyword_else left_bracket statements right_bracket | {none}; 
+	
+	while_statement = {loop} keyword_while left_bracket or_expression right_bracket [first]:end statements [final]:end; 
+
+	constant_dec = {constant} keyword_constant [type]:id [varname]:id assign or_expression eol; 
+
+	function_dec = {multiple} keyword_function id open_parent string close_parent [function]:end dollar parameters eol statements keyword_end [param]:end;
+
+	main_program = {main} keyword_start [start]:end left_bracket statements right_bracket keyword_end [main]:end | {none};
+
+	//Boolean Logic, Parenthesis, negation, etc
+	or_expression = {or} or_expression or and_expression | {pass} and_expression;
+	and_expression = {and} and_expression and equal_expression |{pass} equal_expression;
+	equal_expression = {equiv} equal_expression equiv notequal_expression| {pass} notequal_expression;
+	notequal_expression = {not_equiv} notequal_expression not_equiv less_equal_expression | {pass} less_equal_expression;
+	less_equal_expression = {less_equal} less_equal_expression less_equal less_expression | {pass} less_expression;
+	less_expression = {less} less_expression less great_equal_expression | {pass} great_equal_expression;
+	great_equal_expression = {great_equal} great_equal_expression great_equal great_expression | {pass} great_expression;
+	great_expression = {greater} great_expression greater  expression | {pass} expression; 
+	expression = {mult} expression mult expression2 | {div} expression div expression2 | {pass} expression2;
+	expression2 = {add} expression2 plus expression3 | {minus} expression2 minus expression3 | {pass} expression3;
+	expression3 = {neg} minus expression3 | {pass} expression4;
+	expression4 = {not} not expression4 | {pass} expression5;
+	expression5 = open_parent or_expression close_parent | {pass} operand;
+	operand = {int} integer |{float} float| {variable} id; 

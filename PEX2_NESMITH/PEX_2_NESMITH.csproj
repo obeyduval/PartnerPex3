@@ -1,0 +1,82 @@
+﻿<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProjectGuid>{48C2F36F-9C2D-426E-B0EE-94224C4E2EB8}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <NoStandardLibraries>false</NoStandardLibraries>
+    <AssemblyName>ConsoleApplication</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup>
+    <RootNamespace>PEX_2_NESMITH</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="analysis.cs" />
+    <Compile Include="lexer.cs" />
+    <Compile Include="nodes.cs" />
+    <Compile Include="parser.cs" />
+    <Compile Include="pex_main.cs" />
+    <Compile Include="prods.cs" />
+    <Compile Include="tokens.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="doxygen.css" />
+    <Content Include="PEX_LANGUAGE.txt" />
+    <Content Include="pex_test_results.txt" />
+    <Content Include="testcases\pex2\GoodExamples.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include=".vs\426_PEX\v16\.suo" />
+    <None Include=".vs\PEX Starter Pack\v16\.suo" />
+    <None Include=".vs\ProjectSettings.json" />
+    <None Include=".vs\slnx.sqlite" />
+    <None Include=".vs\VSWorkspaceState.json" />
+    <None Include="Introduction to the Theory of Computation by Michael Sipser %28z-lib.org%29.pdf" />
+    <None Include="Makefile.dotgnu" />
+    <None Include="Makefile.mono" />
+    <None Include="PEX_BUILD.bat" />
+    <None Include="PEX_TEST.bat" />
+    <None Include="README.parser" />
+    <None Include="testcases - Shortcut.lnk" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="testcases\pex1\" />
+    <Folder Include="testcases\pex3\" />
+    <Folder Include="testcases\pex4\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSHARP.Targets" />
+  <ProjectExtensions>
+    <VisualStudio AllowExistingFolder="true" />
+  </ProjectExtensions>
+</Project>
