@@ -1,8 +1,13 @@
 ﻿using System;
+using CS426.node;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
 
 namespace CS426.analysis
 {
-	public abstract classs Definition 
+	public abstract class Definition 
 	{
 		public string name;
 
@@ -22,4 +27,4 @@ public class VariableDefinition : Definition {
 	public TypeDefinition variableType;
 }
 
-public class 
+//public class FunctionDefinition 
