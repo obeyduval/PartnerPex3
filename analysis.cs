@@ -41,7 +41,7 @@ public interface Analysis : Switch
     void CaseANoneElseStatement(ANoneElseStatement node);
     void CaseALoopWhileStatement(ALoopWhileStatement node);
     void CaseAConstantConstantDec(AConstantConstantDec node);
-    void CaseAMultipleFunctionDec(AMultipleFunctionDec node);
+    void CaseASingleFunctionDec(ASingleFunctionDec node);
     void CaseAMainMainProgram(AMainMainProgram node);
     void CaseANoneMainProgram(ANoneMainProgram node);
     void CaseAOrOrExpression(AOrOrExpression node);
@@ -283,7 +283,7 @@ public class AnalysisAdapter : Analysis
     {
         DefaultCase(node);
     }
-    public virtual void CaseAMultipleFunctionDec(AMultipleFunctionDec node)
+    public virtual void CaseASingleFunctionDec(ASingleFunctionDec node)
     {
         DefaultCase(node);
     }
@@ -1242,19 +1242,19 @@ public class DepthFirstAdapter : AnalysisAdapter
         }
         OutAConstantConstantDec(node);
     }
-    public virtual void InAMultipleFunctionDec(AMultipleFunctionDec node)
+    public virtual void InASingleFunctionDec(ASingleFunctionDec node)
     {
         DefaultIn(node);
     }
 
-    public virtual void OutAMultipleFunctionDec(AMultipleFunctionDec node)
+    public virtual void OutASingleFunctionDec(ASingleFunctionDec node)
     {
         DefaultOut(node);
     }
 
-    public override void CaseAMultipleFunctionDec(AMultipleFunctionDec node)
+    public override void CaseASingleFunctionDec(ASingleFunctionDec node)
     {
-        InAMultipleFunctionDec(node);
+        InASingleFunctionDec(node);
         if(node.GetKeywordFunction() != null)
         {
             node.GetKeywordFunction().Apply(this);
@@ -1303,7 +1303,7 @@ public class DepthFirstAdapter : AnalysisAdapter
         {
             node.GetParam().Apply(this);
         }
-        OutAMultipleFunctionDec(node);
+        OutASingleFunctionDec(node);
     }
     public virtual void InAMainMainProgram(AMainMainProgram node)
     {
@@ -2653,19 +2653,19 @@ public class ReversedDepthFirstAdapter : AnalysisAdapter
         }
         OutAConstantConstantDec(node);
     }
-    public virtual void InAMultipleFunctionDec(AMultipleFunctionDec node)
+    public virtual void InASingleFunctionDec(ASingleFunctionDec node)
     {
         DefaultIn(node);
     }
 
-    public virtual void OutAMultipleFunctionDec(AMultipleFunctionDec node)
+    public virtual void OutASingleFunctionDec(ASingleFunctionDec node)
     {
         DefaultOut(node);
     }
 
-    public override void CaseAMultipleFunctionDec(AMultipleFunctionDec node)
+    public override void CaseASingleFunctionDec(ASingleFunctionDec node)
     {
-        InAMultipleFunctionDec(node);
+        InASingleFunctionDec(node);
         if(node.GetParam() != null)
         {
             node.GetParam().Apply(this);
@@ -2714,7 +2714,7 @@ public class ReversedDepthFirstAdapter : AnalysisAdapter
         {
             node.GetKeywordFunction().Apply(this);
         }
-        OutAMultipleFunctionDec(node);
+        OutASingleFunctionDec(node);
     }
     public virtual void InAMainMainProgram(AMainMainProgram node)
     {

@@ -7,24 +7,34 @@ using System.Text;
 
 namespace CS426.analysis
 {
-	public abstract class Definition 
+	public abstract class Definition
 	{
 		public string name;
 
-	public override string ToString()
+		public override string ToString()
 		{
-		return name; 
+			return name;
 		}
 	}
 
-public abstract class TypeDefinition : Definition { }
+	public abstract class TypeDefinition : Definition { }
 
-public class NumberDefinitioin : TypeDefinition { }
+	public class NumberDefinition : TypeDefinition { }
 
-public class StringDefinition : TypeDefinition { }
+	public class StringDefinition : TypeDefinition { }
 
-public class VariableDefinition : Definition {
-	public TypeDefinition variableType;
+	public class VariableDefinition : Definition
+	{
+		public TypeDefinition variableType;
+	}
+
+	public class FloatDefinition : TypeDefinition { }
+
+	public class BooleanDefinition : TypeDefinition { }
+
+	public class FunctionDefinition : Definition
+	{
+		public List<VariableDefinition> parameters;
+	}
 }
 
-//public class FunctionDefinition 

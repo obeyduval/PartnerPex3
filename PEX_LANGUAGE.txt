@@ -113,7 +113,7 @@ Productions
 
 	constant_dec = {constant} keyword_constant [type]:id [varname]:id assign or_expression eol; 
 
-	function_dec = {multiple} keyword_function id open_parent string close_parent [function]:end dollar parameters eol statements keyword_end [param]:end;
+	function_dec = {single} keyword_function id open_parent string close_parent [function]:end dollar parameters eol statements keyword_end [param]:end;
 
 	main_program = {main} keyword_start [start]:end left_bracket statements right_bracket keyword_end [main]:end | {none};
 
