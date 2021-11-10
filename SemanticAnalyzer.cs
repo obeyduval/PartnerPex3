@@ -911,11 +911,53 @@ namespace CS426.analysis
         public override void OutALoopStatement(ALoopStatement node)
         {
             //while_statement = {loop} keyword_while left_bracket or_expression right_bracket end statements end1;
+            //{single} [type]:id [varname]:id 
+
+            Definition typeDef;
+            Definition idDef;
+
+            if (!globalSymbolTable.TryGetValue(node.GetType().Text, out typeDef))
+            {
+                // If the type
+                // doesn't exist, throw an error
+                PrintWarning(node.GetType(), "Type " + node.GetType().Text + " does not exist");
+            }
+            else if (localSymbolTable.TryGetValue(node.GetVarname().Text, out idDef))
+            {
+                // If the id exists, then we can't declare something with the same name
+                PrintWarning(node.GetVarname(), "ID " + node.GetVarname().Text
+                    + " has already been declared");
+            }
+            else
+            {
+                // just check while statement has comparable variables
+            }
         }
 
         public override void OutAConditionalStatement(AConditionalStatement node)
         {
             //if_statement = {conditional} keyword_if open_parent or_expression close_parent left_bracket statements right_bracket else_statement;
+            //{single} [type]:id [varname]:id 
+
+            Definition typeDef;
+            Definition idDef;
+
+            if (!globalSymbolTable.TryGetValue(node.GetType().Text, out typeDef))
+            {
+                // If the type
+                // doesn't exist, throw an error
+                PrintWarning(node.GetType(), "Type " + node.GetType().Text + " does not exist");
+            }
+            else if (localSymbolTable.TryGetValue(node.GetVarname().Text, out idDef))
+            {
+                // If the id exists, then we can't declare something with the same name
+                PrintWarning(node.GetVarname(), "ID " + node.GetVarname().Text
+                    + " has already been declared");
+            }
+            else
+            {
+                // just check if statement has comparable variables
+            }
         }
 
         public override void OutAMultipleStatements(AMultipleStatements node)
