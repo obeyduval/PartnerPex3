@@ -1197,9 +1197,9 @@ public class DepthFirstAdapter : AnalysisAdapter
         {
             node.GetStatements().Apply(this);
         }
-        if(node.GetFinal() != null)
+        if(node.GetLast() != null)
         {
-            node.GetFinal().Apply(this);
+            node.GetLast().Apply(this);
         }
         OutALoopWhileStatement(node);
     }
@@ -1275,9 +1275,9 @@ public class DepthFirstAdapter : AnalysisAdapter
         {
             node.GetCloseParent().Apply(this);
         }
-        if(node.GetFunction() != null)
+        if(node.GetStart() != null)
         {
-            node.GetFunction().Apply(this);
+            node.GetStart().Apply(this);
         }
         if(node.GetDollar() != null)
         {
@@ -1299,9 +1299,9 @@ public class DepthFirstAdapter : AnalysisAdapter
         {
             node.GetKeywordEnd().Apply(this);
         }
-        if(node.GetParam() != null)
+        if(node.GetEnd() != null)
         {
-            node.GetParam().Apply(this);
+            node.GetEnd().Apply(this);
         }
         OutASingleFunctionDec(node);
     }
@@ -1322,9 +1322,9 @@ public class DepthFirstAdapter : AnalysisAdapter
         {
             node.GetKeywordStart().Apply(this);
         }
-        if(node.GetStart() != null)
+        if(node.GetOne() != null)
         {
-            node.GetStart().Apply(this);
+            node.GetOne().Apply(this);
         }
         if(node.GetLeftBracket() != null)
         {
@@ -1342,9 +1342,9 @@ public class DepthFirstAdapter : AnalysisAdapter
         {
             node.GetKeywordEnd().Apply(this);
         }
-        if(node.GetMain() != null)
+        if(node.GetTwo() != null)
         {
-            node.GetMain().Apply(this);
+            node.GetTwo().Apply(this);
         }
         OutAMainMainProgram(node);
     }
@@ -2584,9 +2584,9 @@ public class ReversedDepthFirstAdapter : AnalysisAdapter
     public override void CaseALoopWhileStatement(ALoopWhileStatement node)
     {
         InALoopWhileStatement(node);
-        if(node.GetFinal() != null)
+        if(node.GetLast() != null)
         {
-            node.GetFinal().Apply(this);
+            node.GetLast().Apply(this);
         }
         if(node.GetStatements() != null)
         {
@@ -2666,9 +2666,9 @@ public class ReversedDepthFirstAdapter : AnalysisAdapter
     public override void CaseASingleFunctionDec(ASingleFunctionDec node)
     {
         InASingleFunctionDec(node);
-        if(node.GetParam() != null)
+        if(node.GetEnd() != null)
         {
-            node.GetParam().Apply(this);
+            node.GetEnd().Apply(this);
         }
         if(node.GetKeywordEnd() != null)
         {
@@ -2690,9 +2690,9 @@ public class ReversedDepthFirstAdapter : AnalysisAdapter
         {
             node.GetDollar().Apply(this);
         }
-        if(node.GetFunction() != null)
+        if(node.GetStart() != null)
         {
-            node.GetFunction().Apply(this);
+            node.GetStart().Apply(this);
         }
         if(node.GetCloseParent() != null)
         {
@@ -2729,9 +2729,9 @@ public class ReversedDepthFirstAdapter : AnalysisAdapter
     public override void CaseAMainMainProgram(AMainMainProgram node)
     {
         InAMainMainProgram(node);
-        if(node.GetMain() != null)
+        if(node.GetTwo() != null)
         {
-            node.GetMain().Apply(this);
+            node.GetTwo().Apply(this);
         }
         if(node.GetKeywordEnd() != null)
         {
@@ -2749,9 +2749,9 @@ public class ReversedDepthFirstAdapter : AnalysisAdapter
         {
             node.GetLeftBracket().Apply(this);
         }
-        if(node.GetStart() != null)
+        if(node.GetOne() != null)
         {
-            node.GetStart().Apply(this);
+            node.GetOne().Apply(this);
         }
         if(node.GetKeywordStart() != null)
         {

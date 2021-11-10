@@ -109,13 +109,13 @@ Productions
 	if_statement = {conditional} keyword_if open_parent or_expression close_parent left_bracket statements right_bracket else_statement;
 	else_statement = {mult} keyword_else left_bracket statements right_bracket | {none}; 
 	
-	while_statement = {loop} keyword_while left_bracket or_expression right_bracket [first]:end statements [final]:end; 
+	while_statement = {loop} keyword_while left_bracket or_expression right_bracket [first]:end statements [last]:end; 
 
 	constant_dec = {constant} keyword_constant [type]:id [varname]:id assign or_expression eol; 
 
-	function_dec = {single} keyword_function id open_parent string close_parent [function]:end dollar parameters eol statements keyword_end [param]:end;
+	function_dec = {single} keyword_function id open_parent string close_parent [start]:end dollar parameters eol statements keyword_end [end]:end;
 
-	main_program = {main} keyword_start [start]:end left_bracket statements right_bracket keyword_end [main]:end | {none};
+	main_program = {main} keyword_start [one]:end left_bracket statements right_bracket keyword_end [two]:end | {none};
 
 	//Boolean Logic, Parenthesis, negation, etc
 	or_expression = {or} or_expression or and_expression | {pass} and_expression;
