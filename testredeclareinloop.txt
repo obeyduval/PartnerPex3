@@ -1,0 +1,12 @@
+start: 
+{
+int x;
+x = 4;
+
+while (x < 5):
+{
+string x;
+x = "hi";
+}
+
+} end: 

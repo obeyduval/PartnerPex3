@@ -1,0 +1,14 @@
+start: 
+{
+int x;
+x = 4;
+
+if (x < 5):
+{
+
+   string x;
+   x = "hi";
+
+}
+
+} end:

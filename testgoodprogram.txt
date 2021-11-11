@@ -1,0 +1,16 @@
+Const Y;
+Y = 5;
+
+foo(y): 
+{
+ float x; 
+ x = y;
+
+}
+
+start: 
+{
+
+foo(y);
+
+} end: 
