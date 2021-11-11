@@ -1,0 +1,6 @@
+start: 
+{
+ string x; 
+ string x;
+
+} end: 

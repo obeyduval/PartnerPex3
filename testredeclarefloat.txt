@@ -1,0 +1,6 @@
+start: 
+{
+ float x; 
+ float x;
+
+} end: 

@@ -1,0 +1,13 @@
+foo(): 
+{
+ int x; 
+ int x;
+
+}
+
+start: 
+{
+
+foo();
+
+} end: 

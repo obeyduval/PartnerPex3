@@ -1,0 +1,9 @@
+Const X;
+Const X;
+
+start: 
+{
+
+foo();
+
+} end: 

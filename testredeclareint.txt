@@ -1,0 +1,6 @@
+start: 
+{
+ int x; 
+ int x;
+
+} end: 

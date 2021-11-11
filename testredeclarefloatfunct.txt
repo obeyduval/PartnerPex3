@@ -1,0 +1,13 @@
+foo(): 
+{
+ float x; 
+ float x;
+
+}
+
+start: 
+{
+
+foo();
+
+} end: 
