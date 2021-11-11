@@ -17,6 +17,8 @@ namespace CS426.analysis
         //This is our decorated parse tree
         Dictionary<Node, Definition> decoratedParseTree = new Dictionary<Node, Definition>();
 
+        FunctionDefinition currentFunction = null;
+
         public void PrintWarning(Token t, string msg)
         {
             Console.WriteLine(t.Line + "," + t.Pos + ":" + msg);
@@ -670,13 +672,6 @@ namespace CS426.analysis
         //-----------------------------
         //Onto the statements! :D
         //-----------------------------
-        
-        public override void OutAMainMainProgram(AMainMainProgram node)
-        {
-            //    program3 = {main} main_program;
-
-        }
-
 
         public override void OutAConstantConstantDec(AConstantConstantDec node)
         {
@@ -696,7 +691,8 @@ namespace CS426.analysis
             else if (!decoratedParseTree.TryGetValue(node.GetOrExpression(), out orExp))
             {
                 //Error would have printed at a lower node 
-            }else
+            }
+            else
             {
                 // Add the id to the symbol table
                 VariableDefinition newVariableDefinition = new VariableDefinition();
@@ -710,24 +706,30 @@ namespace CS426.analysis
         public override void OutALoopWhileStatement(ALoopWhileStatement node)
         {
             //	while_statement = {loop} keyword_while left_bracket or_expression right_bracket end statements end1; 
-           // Definition orDef;
-           // Definition stateDef;
+           Definition orDef;
 
-           /* if (!decoratedParseTree.TryGetValue(node.GetOrExpression(), out orDef))
+            if (!decoratedParseTree.TryGetValue(node.GetOrExpression(), out orDef))
             {
                 //error would have been printed at a lower node
-            } else if()*/
-        }
-
-        public override void OutAMultElseStatement(AMultElseStatement node)
-        {
-            //	else_statement = {mult} keyword_else left_bracket statements right_bracket | {none}; 
-
+            } else if(!(orDef is BooleanDefinition))
+            {
+                PrintWarning(node.GetLeftBracket(), "While " + node.GetOrExpression() + " is not a boolean");
+            }
         }
 
         public override void OutAConditionalIfStatement(AConditionalIfStatement node)
         {
             //	if_statement = {conditional} keyword_if open_parent or_expression close_parent left_bracket statements right_bracket else_statement;
+            Definition orDef;
+
+            if(!decoratedParseTree.TryGetValue(node.GetOrExpression(), out orDef))
+            {
+                //error would have been printed at a lower node
+            }
+            else if(!(orDef is Boolean))
+            {
+                PrintWarning(node.GetOpenParent(), "If " + node.GetOrExpression() + " is not a boolesan");
+            }
 
         }
 
@@ -765,6 +767,8 @@ namespace CS426.analysis
         
         public override void OutACallFunctionCallStatement(ACallFunctionCallStatement node)
         {
+            //	function_call_statement = {call} id open_parent arguments close_parent eol; 
+
             Definition idDef;
 
             if (!globalSymbolTable.TryGetValue(node.GetId().Text, out idDef))
@@ -779,6 +783,15 @@ namespace CS426.analysis
             // TODO:  Verify parameters are in the correct order, and are of the correct type
             // HINT:  You can use a class variable to "build" a list of the parameters as
             //        you discover them!
+            // Add the id to the symbol table
+            else
+            {
+                VariableDefinition newVariableDefinition = new VariableDefinition();
+                newVariableDefinition.name = node.GetId().Text;
+                this.currentFunction.parameters.Add(newVariableDefinition);
+
+                localSymbolTable.Add(node.GetId().Text, newVariableDefinition);
+            }
         }
 
         public override void OutADeclarationDeclareStatement(ADeclarationDeclareStatement node)
@@ -875,6 +888,8 @@ namespace CS426.analysis
                 newVariableDefinition.name = node.GetVarname().Text;
                 newVariableDefinition.variableType = (TypeDefinition)typeDef;
 
+                this.currentFunction.parameters.Add(newVariableDefinition);
+
                 localSymbolTable.Add(node.GetVarname().Text, newVariableDefinition);
             }
 
@@ -883,6 +898,33 @@ namespace CS426.analysis
         public override void OutAMultipleParameters(AMultipleParameters node)
         {
             //{multiple} [type]:id [varname]:id comma parameters
+
+            Definition typeDef;
+            Definition idDef;
+
+            if (!globalSymbolTable.TryGetValue(node.GetType().Text, out typeDef))
+            {
+                // If the type
+                // doesn't exist, throw an error
+                PrintWarning(node.GetType(), "Type " + node.GetType().Text + " does not exist");
+            }
+            else if (localSymbolTable.TryGetValue(node.GetVarname().Text, out idDef))
+            {
+                // If the id exists, then we can't declare something with the same name
+                PrintWarning(node.GetVarname(), "ID " + node.GetVarname().Text
+                    + " has already been declared");
+            }
+            else
+            {
+                // Add the id to the symbol table
+                VariableDefinition newVariableDefinition = new VariableDefinition();
+                newVariableDefinition.name = node.GetVarname().Text;
+                newVariableDefinition.variableType = (TypeDefinition)typeDef;
+
+                this.currentFunction.parameters.Add(newVariableDefinition);
+
+                localSymbolTable.Add(node.GetVarname().Text, newVariableDefinition);
+            }
         }
 
         public override void OutASingleArguments(ASingleArguments node)
@@ -901,84 +943,38 @@ namespace CS426.analysis
             {
                 Console.WriteLine("Invalid Parameter: " + expressionDef);
             }
+
         }
 
         public override void OutAMultipleArguments(AMultipleArguments node)
         {
             // {multiple} or_expression comma arguments
-        }
 
-        public override void OutALoopStatement(ALoopStatement node)
-        {
-            //while_statement = {loop} keyword_while left_bracket or_expression right_bracket end statements end1;
-            //{single} [type]:id [varname]:id 
+            Definition expressionDef;
 
-            Definition typeDef;
-            Definition idDef;
-
-            if (!globalSymbolTable.TryGetValue(node.GetType().Text, out typeDef))
+            if (!decoratedParseTree.TryGetValue(node.GetOrExpression(), out expressionDef))
             {
-                // If the type
-                // doesn't exist, throw an error
-                PrintWarning(node.GetType(), "Type " + node.GetType().Text + " does not exist");
+                // We are checking to see if the node below us was decorated.
+                // We don't have to print an error, because if something bad happened
+                // the error would have been printed at the lower node.
             }
-            else if (localSymbolTable.TryGetValue(node.GetVarname().Text, out idDef))
+            else if (!(expressionDef is NumberDefinition) || !(expressionDef is StringDefinition))
             {
-                // If the id exists, then we can't declare something with the same name
-                PrintWarning(node.GetVarname(), "ID " + node.GetVarname().Text
-                    + " has already been declared");
+                Console.WriteLine("Invalid Parameter: " + expressionDef);
             }
-            else
+            //Does multiple arguments need to save a list of expressions as well? I dont think so, but just in case
+            /*else
             {
-                // just check while statement has comparable variables
-            }
+                // Add the id to the symbol table
+                VariableDefinition newVariableDefinition = new VariableDefinition();
+                newVariableDefinition.name = node.GetOrExpression().ToString;
+                newVariableDefinition.variableType = (TypeDefinition)typeDef;
+
+                this.currentFunction.parameters.Add(newVariableDefinition);
+
+                localSymbolTable.Add(node.GetVarname().Text, newVariableDefinition);
+            }*/
+                
         }
-
-        public override void OutAConditionalStatement(AConditionalStatement node)
-        {
-            //if_statement = {conditional} keyword_if open_parent or_expression close_parent left_bracket statements right_bracket else_statement;
-            //{single} [type]:id [varname]:id 
-
-            Definition typeDef;
-            Definition idDef;
-
-            if (!globalSymbolTable.TryGetValue(node.GetType().Text, out typeDef))
-            {
-                // If the type
-                // doesn't exist, throw an error
-                PrintWarning(node.GetType(), "Type " + node.GetType().Text + " does not exist");
-            }
-            else if (localSymbolTable.TryGetValue(node.GetVarname().Text, out idDef))
-            {
-                // If the id exists, then we can't declare something with the same name
-                PrintWarning(node.GetVarname(), "ID " + node.GetVarname().Text
-                    + " has already been declared");
-            }
-            else
-            {
-                // just check if statement has comparable variables
-            }
-        }
-
-        public override void OutAMultipleStatements(AMultipleStatements node)
-        {
-            //{multiple} statement statements
-        }
-
-        public override void OutAPassProgram2(APassProgram2 node)
-        {
-            base.OutAPassProgram2(node);
-        }
-
-        public override void OutAMultipleProgram2(AMultipleProgram2 node)
-        {
-            base.OutAMultipleProgram2(node);
-        }
-
-        public override void OutAPassProgram(APassProgram node)
-        {
-            base.OutAPassProgram(node);
-        }
-
     }
 }
