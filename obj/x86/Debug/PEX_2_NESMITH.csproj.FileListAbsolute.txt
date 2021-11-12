@@ -1,0 +1,2 @@
+C:\Users\C22Timothy.Jackson\Downloads\PartnerPex3\obj\x86\Debug\PEX_2_NESMITH.csprojAssemblyReference.cache
+C:\Users\C22Timothy.Jackson\Downloads\PartnerPex3\obj\x86\Debug\PEX_2_NESMITH.csproj.CoreCompileInputs.cache
