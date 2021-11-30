@@ -50,8 +50,6 @@
     <Compile Include="pex_main.cs" />
     <Compile Include="prods.cs" />
     <Compile Include="SemanticAnalyzer.cs" />
-    <Compile Include="test_lexer.cs" />
-    <Compile Include="test_parser.cs" />
     <Compile Include="tokens.cs" />
   </ItemGroup>
   <ItemGroup>
